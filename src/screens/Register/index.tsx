@@ -6,28 +6,16 @@ import Button from '../../components/Button';
 import {ThemeCtx} from '../../Contexts/ThemeContext';
 import Typography from '../../components/Typography';
 import {useNavigation} from '@react-navigation/native';
-import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
 import {RoutesParamList} from '../../Navigation';
-import {AuthCtx} from '../../Contexts/AuthContext';
-import {useForm} from 'react-hook-form';
+import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
 
-type LoginScreenProps = BottomTabScreenProps<RoutesParamList, 'Login'>;
+type RegisterScreenProps = BottomTabScreenProps<RoutesParamList, 'Register'>;
 
-const Login = () => {
+const Register = () => {
   const {activeTheme} = useContext(ThemeCtx);
-  const navigation = useNavigation<LoginScreenProps['navigation']>();
-  const {login} = useContext(AuthCtx);
-  const {handleSubmit, control} = useForm<any>();
-
-  const handleLogin = async (data: any) => {
-    const response: any = await login(data);
-    if (response.status === 200) {
-      navigation.navigate('Home');
-    }
-  };
-
-  const openRegisterPage = useCallback(() => {
-    navigation.navigate('Register');
+  const navigation = useNavigation<RegisterScreenProps['navigation']>();
+  const openLoginPage = useCallback(() => {
+    navigation.navigate('Login');
   }, [navigation]);
 
   return (
@@ -37,17 +25,18 @@ const Login = () => {
       </View>
       <View>
         <Input
-          placeholder="Email/Phone"
+          placeholder="Name"
           style={{marginBottom: 10}}
-          keyboardType="default"
-          control={control}
-          name="phoneOrEmail"
+          keyboardType="email-address"
+        />
+        <Input
+          placeholder="Email"
+          style={{marginVertical: 10}}
+          keyboardType="email-address"
         />
         <Input
           placeholder="Password"
           secureTextEntry
-          control={control}
-          name="password"
           style={{marginTop: 10, marginBottom: 15}}
         />
         <View style={{flexDirection: 'row', marginBottom: 15}}>
@@ -58,23 +47,23 @@ const Login = () => {
               fontWeight: 'bold',
               fontSize: 14,
             }}>
-            Don't have an account?
+            Have an account?
           </Typography>
-          <TouchableOpacity onPress={openRegisterPage}>
+          <TouchableOpacity onPress={openLoginPage}>
             <Typography
               style={{
                 color: activeTheme.palette.accent,
                 fontWeight: 'bold',
                 fontSize: 14,
               }}>
-              Register Now
+              Login
             </Typography>
           </TouchableOpacity>
         </View>
-        <Button text="LOGIN" onPress={handleSubmit(handleLogin)} />
+        <Button text="REGISTER" />
       </View>
     </View>
   );
 };
 
-export default Login;
+export default Register;
